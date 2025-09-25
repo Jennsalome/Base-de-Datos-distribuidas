@@ -1,0 +1,191 @@
+create table auto (
+  id_auto int not null,
+  marca varchar(255) not null,
+  modelo varchar(255) not null,
+  anio int not null,
+  color varchar(255) not null,
+  pasajeros int not null,
+  placa varchar(255) not null,
+  primary key(id_auto)
+);
+
+create table conductor (
+  id_conductor int not null,
+  nombre varchar(255) not null,
+  apellidopaterno varchar(255) not null,
+  apellidomaterno varchar(255) not null,
+  telefono varchar(255) not null,
+  licencia varchar(255) not null,
+  poliza varchar(255) not null,
+  domicilio varchar(255) not null,
+  sueldo decimal(10,2) not null,
+  primary key(id_conductor)
+);
+
+create table documento (
+  id_documento int not null,
+  id_auto int not null,
+  numero varchar(255) not null,
+  nombre varchar(255) not null,
+  inicio date not null,
+  final date not null,
+  monto decimal(10,2) not null,
+  primary key(id_documento),
+  foreign key (id_auto) references auto(id_auto)
+);
+
+create table ruta (
+  id_ruta int not null,
+  id_auto int not null,
+  id_conductor int not null,
+  fecha date not null,
+  horainicio time not null,
+  origen varchar(255) not null,
+  destino varchar(255) not null,
+  horallegada time not null,
+  cobro decimal(10,2) not null,
+  primary key(id_ruta),
+  foreign key (id_auto) references auto(id_auto),
+  foreign key (id_conductor) references conductor(id_conductor)
+);
+
+create table mantenimiento (
+  id_mantenimiento int not null,
+  id_auto int not null,
+  fechainicio date not null,
+  fechafinal date not null,
+  diagnostico varchar(255) not null,
+  descripcion varchar(500) not null,
+  primary key(id_mantenimiento),
+  foreign key (id_auto) references auto(id_auto)
+);
+
+create table mecanico (
+  id_mecanico int not null,
+  nombre varchar(100) not null,
+  apellidopaterno varchar(255) not null,
+  apellidomaterno varchar(255) not null,
+  telefono varchar(255) not null,
+  sueldo decimal(10,2) not null,
+  primary key(id_mecanico)
+);
+
+create table servicio (
+  id_servicio int not null,
+  id_mantenimiento int not null,
+  id_mecanico int not null,
+  tipo varchar(255) not null,
+  fecha date not null,
+  primary key(id_servicio),
+  foreign key (id_mantenimiento) references mantenimiento(id_mantenimiento),
+  foreign key (id_mecanico) references mecanico(id_mecanico)
+);
+
+create table inventario (
+  id_inventario int not null,
+  descripcion varchar(255) not null,
+  cantidad int not null,
+  precio decimal(10,2) not null,
+  primary key(id_inventario)
+);
+
+create table insumo (
+  id_insumo int not null,
+  id_servicio int not null,
+  id_inventario int not null,
+  cantidad int not null,
+  costo decimal(10,2) not null,
+  primary key(id_insumo),
+  foreign key (id_servicio) references servicio(id_servicio),
+  foreign key (id_inventario) references inventario(id_inventario)
+);
+
+CREATE TABLE propietario (
+  id_propietario INT NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  apellidopaterno VARCHAR(255) NOT NULL,
+  apellidomaterno VARCHAR(255) NOT NULL,
+  telefono VARCHAR(255) NOT NULL,
+  id_auto INT NOT NULL,
+  PRIMARY KEY(id_propietario),
+  FOREIGN KEY (id_auto) REFERENCES auto(id_auto)
+);
+
+insert into auto values
+(1, 'Toyota', 'Corolla', 2018, 'Blanco', 5, 'ABC-123'),
+(2, 'Nissan', 'Versa', 2020, 'Negro', 5, 'XYZ-456'),
+(3, 'Honda', 'Civic', 2019, 'Rojo', 5, 'LMN-789'),
+(4, 'Ford', 'Transit', 2021, 'Gris', 12, 'JKL-321'),
+(5, 'Chevrolet', 'Aveo', 2017, 'Azul', 5, 'QWE-654');
+
+insert into conductor values
+(1, 'Juan', 'Pérez', 'López', '5512345678', 'LIC12345', 'POL123', 'Calle Falsa 123', 8500.50),
+(2, 'María', 'Gómez', 'Ramírez', '3323456789', 'LIC67890', 'POL456', 'Av. Central 45', 9200.00),
+(3, 'Carlos', 'Hernández', 'Torres', '8123456789', 'LIC11223', 'POL789', 'Col. Reforma 76', 8800.75),
+(4, 'Ana', 'Martínez', 'Flores', '2223456789', 'LIC33445', 'POL321', 'Blvd. Juárez 22', 9100.00),
+(5, 'Luis', 'Sánchez', 'Morales', '4423456789', 'LIC55667', 'POL654', 'Av. Hidalgo 11', 8700.30);
+
+insert into documento values
+(1, 1, 'DOC001', 'Tarjeta de Circulación', '2024-01-01', '2026-01-01', 1200.00),
+(2, 2, 'DOC002', 'Seguro Vehicular', '2024-05-01', '2025-05-01', 4500.50),
+(3, 3, 'DOC003', 'Verificación Ambiental', '2024-03-15', '2025-03-15', 800.00),
+(4, 4, 'DOC004', 'Licencia de Transporte', '2024-07-10', '2026-07-10', 2000.25),
+(5, 5, 'DOC005', 'Seguro contra Daños', '2024-02-20', '2025-02-20', 3800.00);
+
+insert into ruta values
+(1, 1, 1, '2025-08-01', '08:00:00', 'Queretaro', 'Hidalgo', '10:45:00', 250.00),
+(2, 2, 2, '2025-08-02', '09:30:00', 'Pachuca', 'CDMX', '10:15:00', 380.50),
+(3, 3, 3, '2025-08-03', '07:15:00', 'Estado de Hidalgo', 'Guadalajara', '10:55:00', 520.00),
+(4, 4, 4, '2025-08-04', '10:00:00', 'Saltillo', 'Monterrey', '12:00:00', 300.00),
+(5, 5, 5, '2025-08-05', '11:20:00', 'Merida', 'Xalapa', '01:50:00', 670.75);
+
+insert into mantenimiento values
+(1, 1, '2025-07-01', '2025-07-02', 'Cambio de aceite', 'Se cambió aceite y filtro'),
+(2, 2, '2025-06-10', '2025-06-11', 'Frenos desgastados', 'Se cambiaron balatas delanteras'),
+(3, 3, '2025-05-05', '2025-05-06', 'Problemas eléctricos', 'Revisión de sistema eléctrico'),
+(4, 4, '2025-04-12', '2025-04-14', 'Neumáticos en mal estado', 'Reemplazo de llantas'),
+(5, 5, '2025-03-18', '2025-03-19', 'Batería descargada', 'Se cambió la batería');
+
+insert into mecanico values
+(1, 'Pedro', 'Luna', 'García', '5511122233', 9500.00),
+(2, 'Jorge', 'Ríos', 'Martínez', '3333344455', 9800.75),
+(3, 'Sofía', 'Castro', 'Mendoza', '8112233445', 9100.00),
+(4, 'Andrés', 'Vega', 'Santos', '2223344556', 9700.50),
+(5, 'Laura', 'Jiménez', 'Ortiz', '4425566778', 9400.25);
+
+insert into servicio values
+(1, 1, 1, 'Cambio de Aceite', '2025-07-01'),
+(2, 2, 2, 'Cambio de Frenos', '2025-06-10'),
+(3, 3, 3, 'Revisión Eléctrica', '2025-05-05'),
+(4, 4, 4, 'Cambio de Llantas', '2025-04-12'),
+(5, 5, 5, 'Cambio de Batería', '2025-03-18');
+
+insert into inventario values
+(1, 'Aceite 5W30', 50, 300.00),
+(2, 'Filtro de Aceite', 40, 120.50),
+(3, 'Balatas', 30, 600.00),
+(4, 'Llantas 185/65R15', 20, 1500.00),
+(5, 'Batería 12V', 15, 2200.75);
+
+insert into insumo values
+(1, 1, 1, 4, 1200.00),
+(2, 1, 2, 1, 120.50),
+(3, 2, 3, 1, 600.00),
+(4, 4, 4, 4, 6000.00),
+(5, 5, 5, 1, 2200.75);
+
+INSERT INTO propietario VALUES
+(1, 'Roberto', 'García', 'Méndez', '5545234307', 1),
+(2, 'Sandra', 'López', 'Ruiz', '3331665830', 2),
+(3, 'Miguel', 'Torres', 'Vargas', '8146331677', 3),
+(4, 'Elena', 'Ramírez', 'Castro', '2221359439', 4),
+(5, 'Javier', 'Ortega', 'Silva', '4431034961', 5);
+
+CREATE VIEW vista_propietario AS
+SELECT a.id_auto, a.marca, a.modelo, a.placa,
+       r.id_ruta, r.origen, r.destino, r.cobro,
+       d.nombre AS documento, d.inicio, d.final
+FROM auto a
+JOIN propietario p ON a.id_auto = p.id_auto
+LEFT JOIN ruta r ON a.id_auto = r.id_auto
+LEFT JOIN documento d ON a.id_auto = d.id_auto;
