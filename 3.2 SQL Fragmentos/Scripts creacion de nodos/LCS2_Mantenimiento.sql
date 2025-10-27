@@ -1,24 +1,24 @@
 CREATE DATABASE LCS2_Mantenimiento;
 USE LCS2_Mantenimiento;
 
--- Tabla VEHICULO (fragmentada)
 CREATE TABLE vehiculo (
-  idVehiculo INT NOT NULL PRIMARY KEY,
-  marca VARCHAR(50) NOT NULL,
-  modelo VARCHAR(50),
-  anio INT,
-  tipoVehiculo VARCHAR(50)
+  id_auto INT NOT NULL,
+  marca VARCHAR(255) NOT NULL,
+  modelo VARCHAR(255) NOT NULL,
+  anio INT NOT NULL,
+  color VARCHAR(255) NOT NULL,
+  placa VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id_auto)
 );
 
--- Tabla MANTENIMIENTO
 CREATE TABLE mantenimiento (
-  idMantenimiento INT AUTO_INCREMENT PRIMARY KEY,
-  idVehiculo INT NOT NULL,
-  fechaInicio DATE NOT NULL,
-  fechaFinal DATE NOT NULL,
-  diagnostico VARCHAR(255),
-  descripcion VARCHAR(500),
-  costo DECIMAL(10,2),
-  taller VARCHAR(100),
-  FOREIGN KEY (idVehiculo) REFERENCES vehiculo(idVehiculo)
+  id_mantenimiento INT NOT NULL,
+  id_auto INT NOT NULL,
+  fechainicio DATE NOT NULL,
+  fechafinal DATE NOT NULL,
+  diagnostico VARCHAR(255) NOT NULL,
+  descripcion VARCHAR(500) NOT NULL,
+  PRIMARY KEY(id_mantenimiento),
+  FOREIGN KEY (id_auto) REFERENCES vehiculo(id_auto)
 );
+
