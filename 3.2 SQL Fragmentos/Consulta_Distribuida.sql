@@ -1,19 +1,12 @@
 SELECT 
-    r.vehiculo.idVehiculo,
-    r.vehiculo.marca,
-    r.ruta.origen,
-    r.ruta.destino,
-    m.mantenimiento.fechaInicio AS fechaMantenimiento,
-    m.mantenimiento.diagnostico
-FROM 
-    LCS3_Rutas.vehiculo AS rVehiculo
-JOIN 
-    LCS3_Rutas.ruta AS rRuta
-ON 
-    rVehiculo.idVehiculo = rRuta.idVehiculo
-JOIN 
-    LCS2_Mantenimiento.mantenimiento AS mMantenimiento
-ON 
-    rVehiculo.idVehiculo = mMantenimiento.idVehiculo
-ORDER BY 
-    rRuta.fecha DESC;
+    v1.id_auto,
+    v1.marca,
+    v1.modelo,
+    v1.placa,
+    v1.anio,
+    (SELECT COUNT(*) FROM LCS2_Mantenimiento.mantenimiento m 
+     WHERE m.id_auto = v1.id_auto) as total_mantenimientos,
+    (SELECT MAX(m.fechafinal) FROM LCS2_Mantenimiento.mantenimiento m 
+     WHERE m.id_auto = v1.id_auto) as ultimo_mantenimiento
+FROM LCS1_Principal.vehiculo v1
+ORDER BY v1.id_auto;
