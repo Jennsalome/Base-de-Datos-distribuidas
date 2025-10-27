@@ -1,33 +1,36 @@
 CREATE DATABASE LCS1_Principal;
 USE LCS1_Principal;
 
--- Tabla FLOTILLA
 CREATE TABLE flotilla (
-  idFlotilla INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  ubicacion VARCHAR(100),
-  totalVehiculos INT
+  id_flotilla INT NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  descripcion VARCHAR(500),
+  PRIMARY KEY(id_flotilla)
 );
 
--- Tabla VEHICULO
 CREATE TABLE vehiculo (
-  idVehiculo INT NOT NULL PRIMARY KEY,
-  marca VARCHAR(50) NOT NULL,
-  modelo VARCHAR(50) NOT NULL,
+  id_auto INT NOT NULL,
+  marca VARCHAR(255) NOT NULL,
+  modelo VARCHAR(255) NOT NULL,
   anio INT NOT NULL,
-  tipoVehiculo VARCHAR(50),
-  placa VARCHAR(20) NOT NULL,
-  estado VARCHAR(50)
+  color VARCHAR(255) NOT NULL,
+  pasajeros INT NOT NULL,
+  placa VARCHAR(255) NOT NULL,
+  id_flotilla INT,
+  PRIMARY KEY(id_auto),
+  FOREIGN KEY (id_flotilla) REFERENCES flotilla(id_flotilla)
 );
 
--- Tabla DOCUMENTO
 CREATE TABLE documento (
-  idDocumento INT AUTO_INCREMENT PRIMARY KEY,
-  idVehiculo INT NOT NULL,
-  nombre VARCHAR(100) NOT NULL,
-  fechaInicio DATE NOT NULL,
-  fechaFinal DATE NOT NULL,
-  monto DECIMAL(10,2),
-  tipoDocumento VARCHAR(50),
-  FOREIGN KEY (idVehiculo) REFERENCES vehiculo(idVehiculo)
+  id_documento INT NOT NULL,
+  id_auto INT NOT NULL,
+  numero VARCHAR(255) NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  inicio DATE NOT NULL,
+  final DATE NOT NULL,
+  monto DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY(id_documento),
+  FOREIGN KEY (id_auto) REFERENCES vehiculo(id_auto)
 );
+
+
