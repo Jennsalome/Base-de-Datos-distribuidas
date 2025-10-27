@@ -1,49 +1,47 @@
 CREATE DATABASE LCS3_Rutas;
 USE LCS3_Rutas;
 
--- Tabla VEHICULO (fragmentada)
 CREATE TABLE vehiculo (
-  idVehiculo INT NOT NULL PRIMARY KEY,
-  marca VARCHAR(50),
-  modelo VARCHAR(50),
-  placa VARCHAR(20)
+  id_auto INT NOT NULL,
+  marca VARCHAR(255) NOT NULL,
+  modelo VARCHAR(255) NOT NULL,
+  placa VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id_auto)
 );
 
--- Tabla CONDUCTOR
 CREATE TABLE conductor (
-  idConductor INT NOT NULL PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  apellidoPaterno VARCHAR(100),
-  apellidoMaterno VARCHAR(100),
-  telefono VARCHAR(20),
-  licencia VARCHAR(50)
+  id_conductor INT NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  apellidopaterno VARCHAR(255) NOT NULL,
+  apellidomaterno VARCHAR(255) NOT NULL,
+  telefono VARCHAR(255) NOT NULL,
+  licencia VARCHAR(255) NOT NULL,
+  id_auto INT NOT NULL, 
+  PRIMARY KEY(id_conductor),
+  FOREIGN KEY (id_auto) REFERENCES vehiculo(id_auto)
 );
 
--- Tabla RUTA
 CREATE TABLE ruta (
-  idRuta INT AUTO_INCREMENT PRIMARY KEY,
-  idVehiculo INT NOT NULL,
-  idConductor INT NOT NULL,
-  origen VARCHAR(100),
-  destino VARCHAR(100),
-  fecha DATE,
-  horaInicio TIME,
-  horaLlegada TIME,
-  distancia DECIMAL(10,2),
-  tiempoEstimado TIME,
-  cobro DECIMAL(10,2),
-  FOREIGN KEY (idVehiculo) REFERENCES vehiculo(idVehiculo),
-  FOREIGN KEY (idConductor) REFERENCES conductor(idConductor)
+  id_ruta INT NOT NULL,
+  id_auto INT NOT NULL,
+  id_conductor INT NOT NULL,
+  fecha DATE NOT NULL,
+  horainicio TIME NOT NULL,
+  origen VARCHAR(255) NOT NULL,
+  destino VARCHAR(255) NOT NULL,
+  horallegada TIME NOT NULL,
+  cobro DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY(id_ruta),
+  FOREIGN KEY (id_auto) REFERENCES vehiculo(id_auto),
+  FOREIGN KEY (id_conductor) REFERENCES conductor(id_conductor)
 );
 
--- Tabla TRANSACCION_COMBUSTIBLE
 CREATE TABLE transaccionCombustible (
-  idTransaccion INT AUTO_INCREMENT PRIMARY KEY,
-  idVehiculo INT NOT NULL,
+  id_transaccion INT NOT NULL,
+  id_ruta INT NOT NULL,
+  litros DECIMAL(10,2) NOT NULL,
+  costo DECIMAL(10,2) NOT NULL,
   fecha DATE NOT NULL,
-  litros DECIMAL(10,2),
-  precioTotal DECIMAL(10,2),
-  tipoCombustible VARCHAR(50),
-  nivelCombustible DECIMAL(5,2),
-  FOREIGN KEY (idVehiculo) REFERENCES vehiculo(idVehiculo)
+  PRIMARY KEY(id_transaccion),
+  FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta)
 );
